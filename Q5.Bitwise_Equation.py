@@ -1,11 +1,6 @@
 #!/bin/python3
 
-import math
 import os
-import random
-import re
-import sys
-
 
 #
 # Complete the 'bitwiseEquations' function below.
@@ -23,6 +18,7 @@ import sys
 # ~ NOT A가 아니다. (1항 연산자)
 # << 왼쪽으로 B 만큼 이동 (1<<3 -> 8)
 # >> 오른쪽쪽으로 B 만큼 이동 (8>>2 -> 2)
+
 
 def bitwise_equations(array1, array2):
 
