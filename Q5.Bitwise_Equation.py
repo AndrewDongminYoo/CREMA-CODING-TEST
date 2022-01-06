@@ -17,24 +17,24 @@ import sys
 #
 
 # 비트연산자
-# & AND
-# | OR
-# ^ XOR
-# ~ NOT
+# & AND A와 B 둘 다 참이다.
+# | OR A와 B 중 하나 이상 참이다.
+# ^ XOR A와 B 중 하나만 참이다.
+# ~ NOT A가 아니다. (1항 연산자)
+# << 왼쪽으로 B 만큼 이동 (1<<3 -> 8)
+# >> 오른쪽쪽으로 B 만큼 이동 (8>>2 -> 2)
 
 def bitwise_equations(array1, array2):
-    N = len(a)
-    answer = []
 
-    def get_bit_result(expected_add_result: int, expected_bit_xor_result: int) -> int:
-        # expected_add_result = 4 expected_bit_xor_result = 2
+    def get_bit_result(expected_add_result, expected_bit_xor_result):
+        # expected_bit_xor_result = 2, expected_add_result = 4
         # A = 1
         A = (expected_add_result - expected_bit_xor_result) // 2
         x = 0
         y = 0
-        for n in range(40):
-            Xi = (expected_bit_xor_result & (1 << n))  # 2 & 10  == 10
-            Ai = (A & (1 << n))  # 1 & 10 == 0
+        for n in range(40):  # n = 0 ? Xi = 0, Ai = 1
+            Xi = (expected_bit_xor_result & (1 << n))
+            Ai = (A & (1 << n))
             if x + y == expected_add_result and x ^ y == expected_bit_xor_result:
                 break
             if Xi == 0 and Ai == 0:
@@ -44,20 +44,21 @@ def bitwise_equations(array1, array2):
                 y = ((1 << n) | y)  # 1
 
             elif Xi > 0 and Ai == 0:
-                y = ((1 << n) | y)  # 11
+                y = ((1 << n) | y)
             else:
                 return 0
 
-        return 2 * x + 3 * y
+        return 2 * x + 3 * y  # 11
 
-    for i in range(N):
+    answer = []
+
+    for i in range(len(array1)):
         answer.append(get_bit_result(array1[i], array2[i]))
 
     return answer
 
 
 if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
     a_count = int(input().strip())
 
@@ -77,7 +78,4 @@ if __name__ == '__main__':
 
     result = bitwise_equations(a, b)
 
-    fptr.write('\n'.join(map(str, result)))
-    fptr.write('\n')
-
-    fptr.close()
+    print('\n'.join(map(str, result)))
