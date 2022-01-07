@@ -24,35 +24,35 @@ import copy
 #
 
 
-def hospital(c_nodes, c_from, c_to):
-    graph = [[] for _ in range((c_nodes + 1))]
-    edges = [0] * (c_nodes + 1)
-    visited = [False] * (c_nodes + 1)
-    visited_counted = [False] * (c_nodes + 1)
+def hospital(c_nodes, c_from, c_to):  # c_to: [2,3,4] c_nodes: 4, c_from: [1,2,3]
+    graph = [[] for _ in range((c_nodes + 1))]  # graph: [[],[],[],[],[]]
+    edges = [0] * (c_nodes + 1)  # edges: [0,0,0,0,0]
+    visited = [False] * (c_nodes + 1)  # visited: [False, False, False, False, False]
+    visit_counted = [False] * (c_nodes + 1)  # visit_counted = [False, False, False, False, False]
     answer = 0
 
     for j in range(len(c_from)):
         a, b = c_from[j], c_to[j]
         graph[a].append(b)
-        graph[b].append(a)
+        graph[b].append(a)  # graph: [[], [2], [1, 3], [2, 4], [3]]
 
     for j in range(1, c_nodes + 1):
-        edges[j] = len(graph[j])
+        edges[j] = len(graph[j])  # edges: [0, 1, 2, 2, 1]
 
     for j in range(1, c_nodes + 1):
         if edges[j] == 1:
-            visited[graph[j][0]] = True
-    visited_counted = visited[:]
-    answer += visited.count(True)
+            visited[graph[j][0]] = True  # visited = [False, False, True, True, False]
+    visit_counted = visited[:]  # visit_counted = [False, False, True, True, False]
+    answer += visited.count(True)  # answer = 2
 
     for j in range(1, c_nodes + 1):
         if visited[j]:
             for node in graph[j]:
-                visited_counted[node] = True
-    visited = visited_counted[:]
+                visit_counted[node] = True
+    visited = visit_counted[:]  # visit_counted = [False, True, True, True, True]
 
-    while visited.count(False) != 1:
-        graph_tmp = [[] for _ in range((c_nodes + 1))]
+    while visited.count(False) != 1:  # visited.count(False) = 1
+        graph_tmp = [[] for _ in range(c_nodes + 1)]
         edges_tmp = [0] * (c_nodes + 1)
         for j in range(1, c_nodes + 1):
             if not visited[j]:
@@ -71,13 +71,13 @@ def hospital(c_nodes, c_from, c_to):
                 if not visited[j]:
                     visited[graph_tmp[j][0]] = True
 
-        answer += visited.count(True) - visited_counted.count(True)
-        visited_counted = visited[:]
+        answer += visited.count(True) - visit_counted.count(True)
+        visit_counted = visited[:]
         for j in range(1, c_nodes + 1):
             if visited[j]:
                 for node in graph_tmp[j]:
-                    visited_counted[node] = True
-        visited = visited_counted[:]
+                    visit_counted[node] = True
+        visited = visit_counted[:]
         graph = copy.deepcopy(graph_tmp)
         edges = copy.deepcopy(edges_tmp)
     return answer
@@ -85,12 +85,13 @@ def hospital(c_nodes, c_from, c_to):
 
 # Write your code here
 if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    # fptr = open(os.environ['OUTPUT_PATH'], 'w')
     city_nodes, city_edges = map(int, input().rstrip().split())
     city_from = [0] * city_edges
     city_to = [0] * city_edges
     for i in range(city_edges):
         city_from[i], city_to[i] = map(int, input().rstrip().split())
     result = hospital(city_nodes, city_from, city_to)
-    fptr.write(str(result) + '\n')
-    fptr.close()
+    print("result:", result)
+    # fptr.write(str(result) + '\n')
+    # fptr.close()
